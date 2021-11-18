@@ -55,4 +55,5 @@ if __name__ == "__main__":
 
     # Exercise 37
     df = load_data()
-    getNumRowAndCol()
+    row, col = getNumRowAndCol(df)
+    print(f"{row} Datensätze mit {col} Spalten.")
