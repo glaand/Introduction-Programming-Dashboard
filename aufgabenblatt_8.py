@@ -55,5 +55,6 @@ if __name__ == "__main__":
 
     # Exercise 37
     df = load_data()
+    print(df.head())
     row, col = getNumRowAndCol(df)
     print(f"{row} Datensätze mit {col} Spalten.")
