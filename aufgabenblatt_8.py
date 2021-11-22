@@ -13,10 +13,9 @@
 import pandas as pd
 import os
 import dash
+import plotly.express as px
 from dash import dcc
 from dash import html
-from dash.dependencies import Input, Output
-import plotly.express as px
 from typing import Tuple
 
 
@@ -58,13 +57,11 @@ def getNumRowAndCol(dataFrame) -> Tuple[int, int]:
 # Exercise 38
 # =============================================================================
 def filterDF(**kwargs) -> pd.DataFrame:
-    # überprüfung gibts column
-    # überprüfung gibts key in column
+    # keywords: data=dataFrame, column=Spalte, key=Suchwert
     if kwargs['column'] not in list(kwargs['data'].columns): 
         print(f"Given column {kwargs['column']} is not in Data.")
         return pd.DataFrame([])
     return kwargs['data'].loc[kwargs['data'][kwargs['column']] == kwargs['key']]
-
 
 
 if __name__ == "__main__":
@@ -85,19 +82,20 @@ if __name__ == "__main__":
     def exercise38():
         # Exercise 38
         df = load_data()
-        filteredByCountry = filterDF(data=df, column="Country", key="Portugal")
+        filteredByCountry = filterDF(data=df, column="Country", key="Switzerland")
         filteredByDiscipline = filterDF(data=df, column="Discipline", key="Judo")
-
+        print(f"a) Daten gefiltert nach dem Land Schweiz: \n{filteredByCountry} \nb) Daten gefiltert nach Disciplin Judo: \n{filteredByDiscipline}")
 
         app = dash.Dash(__name__)
         app.layout = html.Div([
-            html.P("Verbindung Land mit Sport:"),
+            html.Title("Verbindung Disziplin mit Land:"),
             dcc.Graph(
                 id="graph", 
                 figure=px.scatter(df, 
-                    x="Discipline", 
-                    y="Country", 
-                    color="Medal", 
+                    x="Country",
+                    y="Discipline",
+                    color="Medal",
+                    # Farben für Punkte: Gold = FFD700 | Silber = C0C0C0 | Bronze = CD7F32
                     color_discrete_sequence=["#FFD700", "#C0C0C0", "#CD7F32"]
                 )
 
@@ -107,3 +105,8 @@ if __name__ == "__main__":
         app.run_server(debug=True, host="0.0.0.0", port=9999)
 
     exercise38()
+
+    def exercise39():
+        pass
+
+    # exercise39()
