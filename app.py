@@ -92,8 +92,24 @@ def buildStats(data) -> list:
                           showgrid=True,
                           gridwidth=1,
                           gridcolor="gray"
-                      ))
-            ]
+                      )),
+            dcc.Graph(id="scatter_geo",
+                      config={"displayModeBar": False},
+                      animate=True,
+                      figure=px.scatter_geo(
+                          data,
+                          locations="Country_Code",
+                          color="Medal",
+                          projection="natural earth",
+                          hover_name="Country",
+                          hover_data={"Country": False, "Country_Code": False},
+                          title="International Olympic Medals",
+                          animation_frame="Year"
+                      ).update_layout(
+                          {'plot_bgcolor': 'rgba(0, 0, 0, 0)',
+                           'paper_bgcolor': 'rgba(0, 0, 0, 0)'}
+                      )
+            )]
 
 
 def buildLayout(data) -> dash:
