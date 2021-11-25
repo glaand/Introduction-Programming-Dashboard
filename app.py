@@ -18,6 +18,8 @@ import plotly.express as px
 
 DATA_PATH = os.path.join("datasets", "data.csv")
 
+selectedCol = "Country"
+
 
 def loadData(path=None) -> pd.DataFrame:
     if path is None:
@@ -33,17 +35,19 @@ def initApp() -> dash:
 
 
 def buildUserNav(data) -> list:
+    dropdownOptions = getDropdownOptions(data)
+    rows = getRows(data)
     return [html.H2("Dashboard Olympia Alex & André"),
             html.P("Visualising time series with Plotly - Dash"),
             html.P("Select the Data you want to plot."),
             dcc.Dropdown(id='columns-dropdown',
-                         options=getDropdownOptions(data),
-                         value="Year",
+                         options=dropdownOptions,
+                         value=dropdownOptions[0]["label"],
                          style={'backgroundColor': '#1E1E1E'},
                          className='optionSelector'),
-            dcc.Dropdown(id="country-dropdown",
-                         options=getCountries(data),
-                         value="Switzerland",
+            dcc.Dropdown(id="rows-dropdown",
+                         options=rows,
+                         value=rows[0]["label"],
                          style={'backgroundColor': '#1E1E1E'},
                          className="countrySelector")
             ]
@@ -56,11 +60,14 @@ def getDropdownOptions(df: pd.DataFrame) -> list:
     return dict_list
 
 
-def getCountries(df: pd.DataFrame) -> list:
+def getRows(df: pd.DataFrame, key: str = None) -> list:
+    if key is None:
+        key = selectedCol
     dict_list = []
-    for i in list(df["Country"].unique()):
+    for i in list(df[key].unique()):
         dict_list.append({"label": i, "value": i})
     return dict_list
+
 
 def buildStats(data) -> list:
     return [dcc.Graph(id="scatter",
@@ -105,6 +112,14 @@ def main():
     df = loadData()
     app = initApp()
     app.layout = buildLayout(df)
+
+    @app.callback(
+        Output(component_id='rows-dropdown', component_property='options'),
+        Input(component_id='columns-dropdown', component_property='value')
+    )
+    def update_output_div(input_value):
+        return getRows(df, input_value)
+
     app.run_server(debug=True, host="0.0.0.0", port=9999)
 
 
