@@ -105,11 +105,8 @@ def buildStats(data) -> list:
                           hover_data={"Country": False, "Country_Code": False},
                           title="International Olympic Medals",
                           animation_frame="Year"
-                      ).update_layout(
-                          {'plot_bgcolor': 'rgba(0, 0, 0, 0)',
-                           'paper_bgcolor': 'rgba(0, 0, 0, 0)'}
-                      )
-            )]
+                      ))
+            ]
 
 
 def buildLayout(data) -> dash:
