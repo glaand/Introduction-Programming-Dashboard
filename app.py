@@ -135,7 +135,7 @@ def main():
     def update_output_div(input_value):
         return getRows(df, input_value)
 
-    app.run_server(debug=True, host="127.0.0.1", port=9999)
+    app.run_server(debug=True, host="0.0.0.0", port=9999)
 
 
 if __name__ == "__main__":
