@@ -63,10 +63,12 @@ def filterDF(**kwargs) -> pd.DataFrame:
         return pd.DataFrame([])
     return kwargs['data'].loc[kwargs['data'][kwargs['column']] == kwargs['key']]
 
+
 def showDash(elements: list):
     app = dash.Dash(__name__)
     app.layout = html.Div(elements)
     app.run_server(debug=True, host="0.0.0.0", port=9999)
+
 
 if __name__ == "__main__":
     def exercise36():
@@ -151,3 +153,8 @@ if __name__ == "__main__":
         ])
 
     exercise39()
+
+    def exercise40():
+        return
+
+    exercise40()
