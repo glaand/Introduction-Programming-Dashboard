@@ -66,11 +66,14 @@ def filterDF(**kwargs) -> pd.DataFrame:
         return pd.DataFrame([])
     return kwargs['data'].loc[kwargs['data'][kwargs['column']] == kwargs['key']]
 
-
+# =============================================================================
+# Exercise 39 & 40
+# =============================================================================
 def showDash(elements: list):
     app = dash.Dash(__name__)
     app.layout = html.Div(elements)
     return app
+
 
 def getRows(df: pd.DataFrame, key: str = None) -> list:
     dict_list = []
@@ -78,11 +81,13 @@ def getRows(df: pd.DataFrame, key: str = None) -> list:
         dict_list.append({"label": i, "value": i})
     return dict_list
 
+
 def get_axis(df, medal, key):
     r = df[df["Medal"] == medal][key]
     if key == "Year":
         r = np.sort(r.unique())
     return r
+
 
 if __name__ == "__main__":
     def exercise36():
@@ -167,7 +172,6 @@ if __name__ == "__main__":
     def exercise40():
         df = load_data()
         df2 = df.groupby(["Country", "Year", "Medal"]).size().reset_index(name="count")
-        # @todo - Sort Countries
         rows = getRows(df2, "Country")
         df2["Year"] = df2["Year"].astype(int)
         app = showDash([
@@ -183,12 +187,11 @@ if __name__ == "__main__":
                 figure={}
             )
         ])
+
         @app.callback(
             Output(component_id='line-chart', component_property='figure'),
             Input(component_id='country', component_property='value'),
         )
-        
-
         def update_graph(country):
             dff = df2.copy()
             dff2 = dff[dff["Country"] == country]
@@ -234,13 +237,13 @@ if __name__ == "__main__":
             fig.update_layout(
                 barmode='stack'
             )
-
             return fig
-
         return app
-
-    # app = exercise38()
-    # app = exercise39()
-    app = exercise40()
-    app.run_server(debug=True, host="0.0.0.0", port=9999)
+    exercise36()
+    exercise37()
+    # application = exercise38()
+    # application = exercise39()
+    application = exercise40()
+    # Open Web Browser and type "localhost:9999" and hit enter
+    application.run_server(debug=True, host="0.0.0.0", port=9999)
 
