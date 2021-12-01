@@ -7,9 +7,49 @@
 # =============================================================================
 """Aufgabenblatt 9"""
 
+# =============================================================================
+# Imports
+# =============================================================================
+import pandas as pd
+import os
+
+# =============================================================================
+# Constants
+# =============================================================================
+DATA_PATH = os.path.join("datasets", "data.csv")
+
+
+# =============================================================================
+# Aufgabe 41
+# =============================================================================
+def load_data(path=None) -> pd.DataFrame:
+    if path is None:
+        path = DATA_PATH
+    with open(path) as file:
+        return pd.read_csv(file).dropna()
+
+
+def getCountries(df) -> list:
+    result = list(df["Country"].unique())
+    return sorted(result)
+
+
+def getWinners(df) -> list:
+    result = list(df["Athlete"].unique())
+    return sorted(result)
+
+
+def getDiciplines(df) -> list:
+    result = list(df["Discipline"].unique())
+    return sorted(result)
+
 
 def aufgabe41():
-    pass
+    df = load_data()
+    laender = getCountries(df)
+    gewinner = getWinners(df)
+    sportarten = getDiciplines(df)
+    print(f"{laender=}\n{gewinner=}\n{sportarten=}\n")
 
 
 def aufgabe42():
