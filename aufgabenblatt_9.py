@@ -29,27 +29,17 @@ def load_data(path=None) -> pd.DataFrame:
         return pd.read_csv(file).dropna()
 
 
-def getCountries(df) -> list:
-    result = list(df["Country"].unique())
-    return sorted(result)
-
-
-def getWinners(df) -> list:
-    result = list(df["Athlete"].unique())
-    return sorted(result)
-
-
-def getDiciplines(df) -> list:
-    result = list(df["Discipline"].unique())
-    return sorted(result)
+def getSortedListByColumnName(df: pd.DataFrame, columnName: str) -> list:
+    return sorted(list(df[columnName].unique()))
 
 
 def aufgabe41():
     df = load_data()
-    laender = getCountries(df)
-    gewinner = getWinners(df)
-    sportarten = getDiciplines(df)
+    laender = getSortedListByColumnName(df, "Country")
+    gewinner = getSortedListByColumnName(df, "Athlete")
+    sportarten = getSortedListByColumnName(df, "Discipline")
     print(f"{laender=}\n{gewinner=}\n{sportarten=}\n")
+    print(f"Es gibt {len(laender)} Länder. \nEs gibt {len(gewinner)} Medaillengewinner. \nEs gibt {len(sportarten)} Disziplinen.")
 
 
 def aufgabe42():
