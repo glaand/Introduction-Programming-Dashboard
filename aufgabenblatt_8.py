@@ -199,16 +199,13 @@ if __name__ == "__main__":
                 a_row = pd.Series({"Country": country, "Year": y, "Medal": "Bronze", "count": 0})
                 row_df = pd.DataFrame([a_row])
                 dff2 = pd.concat([row_df, dff2], ignore_index=True)
-            print(dff2.head())
             dff2 = dff2.loc[dff2.reset_index().groupby(["Country", "Year", "Medal"])["count"].idxmax()]
-            print(dff2.head())
             bronze_x = get_axis(dff2, "Bronze", "Year")
             bronze_y = get_axis(dff2, "Bronze", "count").to_numpy()
             silver_x = get_axis(dff2, "Silver", "Year")
             silver_y = get_axis(dff2, "Silver", "count").to_numpy()
             gold_x = get_axis(dff2, "Gold", "Year")
             gold_y = get_axis(dff2, "Gold", "count").to_numpy()
-            print(bronze_x, bronze_y)
 
             fig = go.Figure(data=[
                 go.Bar(
