@@ -26,7 +26,6 @@ def loadData(path=None) -> pd.DataFrame:
 
 def initApp() -> dash:
     appDash = dash.Dash(__name__)
-    appDash.layout = html.Div()
     return appDash
 
 
@@ -125,11 +124,11 @@ def main():
     app.layout = buildLayout(df)
 
     @app.callback(
-        Output(component_id='rows-dropdown', component_property='options'),
-        Input(component_id='columns-dropdown', component_property='value')
+        [Output(component_id='rows-dropdown', component_property='options')],
+        [Input(component_id='columns-dropdown', component_property='value')]
     )
     def update_output_div(input_value):
-        return getRows(df, input_value)
+        return getRows(df, input_value),
 
     app.run_server(debug=True, host="0.0.0.0", port=9999)
 
