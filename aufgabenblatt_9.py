@@ -11,22 +11,16 @@
 # Imports
 # =============================================================================
 import pandas as pd
-import os
-
-# =============================================================================
-# Constants
-# =============================================================================
-DATA_PATH = os.path.join("datasets", "data.csv")
 
 
 # =============================================================================
 # Aufgabe 41
 # =============================================================================
 def load_data(path=None) -> pd.DataFrame:
+    # Data is loaded from GitHub Repo
     if path is None:
-        path = DATA_PATH
-    with open(path) as file:
-        return pd.read_csv(file).dropna()
+        path = "https://raw.githubusercontent.com/glaand/Introduction-Programming-Dashboard/main/datasets/data.csv"
+    return pd.read_csv(path).dropna()
 
 
 def getSortedListByColumnName(df: pd.DataFrame, columnName: str) -> list:
