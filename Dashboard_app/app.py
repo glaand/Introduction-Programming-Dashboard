@@ -10,22 +10,18 @@
 # =============================================================================
 # Imports
 # =============================================================================
-import os
 import pandas as pd
 import dash
 from dash import html, dcc, Input, Output
 import plotly.express as px
-
-DATA_PATH = os.path.join("datasets", "data.csv")
 
 selectedCol = "Country"
 
 
 def loadData(path=None) -> pd.DataFrame:
     if path is None:
-        path = DATA_PATH
-    with open(path) as file:
-        return pd.read_csv(file).dropna()
+        path = "https://raw.githubusercontent.com/glaand/Introduction-Programming-Dashboard/main/datasets/data.csv"
+    return pd.read_csv(path).dropna()
 
 
 def initApp() -> dash:
