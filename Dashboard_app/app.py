@@ -38,12 +38,10 @@ def buildUserNav(data) -> list:
             dcc.Dropdown(id='columns-dropdown',
                          options=dropdownOptions,
                          value=dropdownOptions[0]["label"],
-                         style={'backgroundColor': '#1E1E1E'},
                          className='optionSelector'),
             dcc.Dropdown(id="rows-dropdown",
                          options=rows,
                          value=rows[0]["label"],
-                         style={'backgroundColor': '#1E1E1E'},
                          className="countrySelector")
             ]
 
@@ -74,19 +72,7 @@ def buildStats(data) -> list:
                           y="Discipline",
                           color="Medal",
                           # Colors: Gold = FFD700 | Silver = C0C0C0 | Bronze = CD7F32
-                          color_discrete_sequence=["#FFD700", "#C0C0C0", "#CD7F32"],
-                          template="plotly_dark"
-                      ).update_layout(
-                          {'plot_bgcolor': 'rgba(0, 0, 0, 0)',
-                           'paper_bgcolor': 'rgba(0, 0, 0, 0)'}
-                      ).update_xaxes(
-                          showgrid=True,
-                          gridwidth=1,
-                          gridcolor="gray"
-                      ).update_yaxes(
-                          showgrid=True,
-                          gridwidth=1,
-                          gridcolor="gray"
+                          color_discrete_sequence=["#FFD700", "#C0C0C0", "#CD7F32"]
                       )),
             dcc.Graph(id="scatter_geo",
                       config={"displayModeBar": False},
