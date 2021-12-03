@@ -31,9 +31,9 @@ def aufgabe41():
     df = load_data()
     laender = getSortedListByColumnName(df, "Country")
     gewinner = getSortedListByColumnName(df, "Athlete")
-    sportarten_disziplin_events = df.groupby(["Sport", "Discipline", "Event"]).size().reset_index(name='count')
-    print(f"{laender=}\n{gewinner=}\n{sportarten_disziplin_events=}\n")
-    print(f"Es gibt {len(laender)} Länder. \nEs gibt {len(gewinner)} Medaillengewinner. \nEs gibt {len(sportarten_disziplin_events)} Sportarten/Disziplinen/Events.")
+    sportarten = getSortedListByColumnName(df, "Discipline")
+    print(f"{laender=}\n{gewinner=}\n{sportarten=}\n")
+    print(f"Es gibt {len(laender)} Länder. \nEs gibt {len(gewinner)} Medaillengewinner. \nEs gibt {len(sportarten)} Disziplinen.")
 
 
 def aufgabe42():
