@@ -37,7 +37,10 @@ def aufgabe41():
 
 
 def aufgabe42():
-    pass
+    df = load_data()
+    countriesMedalSum = df.groupby(["Country"]).size().reset_index(name='count')
+    countriesMedalSum = countriesMedalSum.sort_values(by=["count"], ascending=False)
+    print(countriesMedalSum.head(10))
 
 
 def aufgabe43():
@@ -53,7 +56,7 @@ def aufgabe45():
 
 
 def main():
-    aufgabe41()
+    # aufgabe41()
     aufgabe42()
     aufgabe43()
     aufgabe44()
