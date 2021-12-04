@@ -11,6 +11,12 @@
 # Imports
 # =============================================================================
 import pandas as pd
+import numpy as np
+from dash import dcc
+from dash import html
+import plotly.express as px
+from aufgabenblatt_8 import showDash
+import plotly.graph_objects as go
 
 
 # =============================================================================
@@ -27,8 +33,19 @@ def getSortedListByColumnName(df: pd.DataFrame, columnName: str) -> list:
     return sorted(list(df[columnName].unique()))
 
 
-def aufgabe41():
-    df = load_data()
+def getCountriesByDiscipline(df) -> pd.DataFrame:
+    return df.groupby(["Country", "Discipline"]).size().reset_index(name="Count").sort_values(by=["Count"], ascending=False)
+
+def normalise(row, countriesByMedalSum) -> pd.Series:
+    try:
+        row["Count"] = (float)(row["Count"] / countriesByMedalSum[countriesByMedalSum["Country"] == row["Country"]]["Count"])
+    except KeyError:
+        row["Count"] = 0.0
+    except ZeroDivisionError:
+        row["Count"] = 1.0
+    return row
+
+def aufgabe41(df):
     laender = getSortedListByColumnName(df, "Country")
     gewinner = getSortedListByColumnName(df, "Athlete")
     sportarten = getSortedListByColumnName(df, "Discipline")
@@ -36,31 +53,65 @@ def aufgabe41():
     print(f"Es gibt {len(laender)} Länder. \nEs gibt {len(gewinner)} Medaillengewinner. \nEs gibt {len(sportarten)} Disziplinen.")
 
 
-def aufgabe42():
-    df = load_data()
-    countriesMedalSum = df.groupby(["Country"]).size().reset_index(name='count')
-    countriesMedalSum = countriesMedalSum.sort_values(by=["count"], ascending=False)
-    print(countriesMedalSum.head(10))
+def aufgabe42(df, toPrint=False) -> pd.DataFrame:
+    countriesByMedalSum = df.groupby(["Country"]).size().reset_index(name="Count")
+    countriesByMedalSum = countriesByMedalSum.sort_values(by=["Count"], ascending=False)
+    if toPrint:
+        print(countriesByMedalSum.head(10))
+    return countriesByMedalSum
 
 
-def aufgabe43():
-    pass
+def aufgabe43(df, toPrint=False) -> pd.DataFrame:
+    matrix = df.pivot(index="Discipline", columns="Country", values="Count")
+    matrix = matrix.replace(to_replace =np.nan, value =0.) 
+    if toPrint:
+        print(matrix)
+    return matrix
 
 
-def aufgabe44():
-    pass
+def aufgabe44(df, toPrint=False) -> pd.DataFrame:
+    countriesByMedalSum = aufgabe42(df)
+    normalised = getCountriesByDiscipline(df)
+    normalised = normalised.apply(
+        lambda row: normalise(row, countriesByMedalSum),
+        axis=1
+    )
+    matrix = aufgabe43(normalised)
+    fig = go.Figure(
+        go.Heatmap(
+            x=matrix.columns.tolist(),
+            y=matrix.index.tolist(),
+            z=matrix.to_numpy()
+        )
+    )
+    fig['layout']['xaxis']['type'] = 'category'
+    fig['layout']['yaxis']['type'] = 'category'
+    fig.update_layout(height=1000)
+
+    app = showDash([
+            html.H1("Aufgabe 44"),
+            html.H2("Farbkodierte Matrixvisualisierung"),
+            dcc.Graph(
+                id="heatmap", 
+                figure=fig,
+            ),
+        ])
+    
+    app.run_server(debug=True, host="0.0.0.0", port=9999)
 
 
-def aufgabe45():
+
+def aufgabe45(df, toPrint=False):
     pass
 
 
 def main():
-    # aufgabe41()
-    aufgabe42()
-    aufgabe43()
-    aufgabe44()
-    aufgabe45()
+    df = load_data()
+    # aufgabe41(df)
+    # aufgabe42(df, True)
+    # aufgabe43(getCountriesByDiscipline(df), True)
+    aufgabe44(df, True)
+    aufgabe45(df, True)
 
 
 if __name__ == "__main__":
