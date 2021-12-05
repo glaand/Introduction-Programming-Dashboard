@@ -106,7 +106,7 @@ def aufgabe45(df):
         html.H2("Farbkodierte Matrixvisualisierung"),
         dcc.Graph(
             id="heatmap",
-            figure=fig,
+            figure=None,
         ),
     ])
 
