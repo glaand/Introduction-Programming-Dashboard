@@ -12,7 +12,7 @@
 # =============================================================================
 import pandas as pd
 import numpy as np
-from dash import dcc
+from dash import dcc, Output, Input
 from dash import html
 import plotly.express as px
 from aufgabenblatt_8 import showDash
@@ -96,30 +96,82 @@ def aufgabe44(df: pd.DataFrame):
                 figure=fig,
             ),
         ])
-    
-    app.run_server(debug=True, host="0.0.0.0", port=9999)
+    return app, fig
 
 
-def aufgabe45(df):
+def aufgabe45(df, fig):
     app = showDash([
         html.H1("Aufgabe 45"),
-        html.H2("Farbkodierte Matrixvisualisierung"),
+        html.H2("Mehrere Graphen darstellen"),
+        dcc.Dropdown(
+            id="gender_dropdown",
+            options=[
+                {"label": "Men", "value": "Men"},
+                {"label": "Women", "value": "Women"},
+            ],
+            value="Men"
+        ),
+        dcc.Graph(
+            id="bar",
+        ),
+        dcc.Slider(
+            id='year_slider',
+            min=df['Year'].min(),
+            max=df['Year'].max(),
+            value=df['Year'].max(),
+            marks={str(int(year)): str(int(year)) for year in df["Year"].unique()},
+            step=4
+        ),
+        html.H3("Grafik Nummer 2"),
         dcc.Graph(
             id="heatmap",
-            figure=None,
+            figure=fig,
+        ),
+        html.H3("Grafik Nummer 3"),
+        dcc.Graph(
+            id="line",
+            figure=px.scatter(
+                    df,
+                    x="Country",
+                    y="Discipline",
+                    color="Medal",
+                    # Farben für Punkte: Gold = FFD700 | Silber = C0C0C0 | Bronze = CD7F32
+                    color_discrete_sequence=["#FFD700", "#C0C0C0", "#CD7F32"]
+                ),
         ),
     ])
 
-    app.run_server(debug=True, host="0.0.0.0", port=9999)
+    @app.callback(
+        [Output("bar", "figure")],
+        [Input("gender_dropdown", "value"),
+         Input("year_slider", "value")]
+    )
+    def updateBarGraph(gender, year_value):
+        # Dataframe should contain, men/women and their respective medal count per year
+        dff = df.groupby(["Year", "Gender"]).size().reset_index(name="Count")
+        # select either male or female (men/women)
+        dff = dff[dff["Gender"] == gender]
+        # dataframe drops the years which arent needed
+        dff = dff.drop(dff[dff.Year > year_value].index)
+        fig = px.bar(dff,
+                      x="Year",
+                      y="Count",
+                      title=f"Anzahl Medaillen der {'Männer' if gender == 'Men' else 'Frauen'}",)
+        fig.update_xaxes(type='category')
+        return fig,
+
+    return app
 
 
 def main():
     df = load_data()
-    aufgabe41(df)
-    aufgabe42(df)
-    aufgabe43(getCountriesByDiscipline(df))
-    aufgabe44(df)
-    aufgabe45(df)
+    # aufgabe41(df)
+    # aufgabe42(df)
+    # aufgabe43(getCountriesByDiscipline(df))
+    app2, fig = aufgabe44(df)
+    app = aufgabe45(df, fig)
+
+    app.run_server(debug=True, host="0.0.0.0", port=9999)
 
 
 if __name__ == "__main__":
