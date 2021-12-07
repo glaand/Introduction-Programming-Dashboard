@@ -49,7 +49,7 @@ def aufgabe41(df: pd.DataFrame, toPrint=False):
     gewinner = getSortedListByColumnName(df, "Athlete")
     sportarten = getSortedListByColumnName(df, "Discipline")
     if toPrint:
-        print(f"{laender=}\n{gewinner=}\n{sportarten=}\n")
+        print(f"{laender}\n{gewinner}\n{sportarten}\n")
         print(f"Es gibt {len(laender)} Länder. \nEs gibt {len(gewinner)} Medaillengewinner. \nEs gibt {len(sportarten)} Disziplinen.")
 
 
