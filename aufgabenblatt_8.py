@@ -69,9 +69,9 @@ def filterDF(**kwargs) -> pd.DataFrame:
 # =============================================================================
 # Exercise 39 & 40
 # =============================================================================
-def showDash(elements: list):
+def showDash(elements: list, className=""):
     app = dash.Dash(__name__)
-    app.layout = html.Div(elements)
+    app.layout = html.Div(elements, className=className)
     return app
 
 

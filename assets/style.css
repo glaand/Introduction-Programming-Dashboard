@@ -326,3 +326,19 @@ a {
     margin: 0px;
   }
 }
+
+.flex {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 100%;
+    flex-wrap: wrap;
+}
+
+.flex .graph {
+    flex: 1;
+}
+
+.aufgabe45 {
+    padding: 2rem;
+}

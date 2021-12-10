@@ -86,7 +86,7 @@ def aufgabe44(df: pd.DataFrame):
     )
     fig['layout']['xaxis']['type'] = 'category'
     fig['layout']['yaxis']['type'] = 'category'
-    fig.update_layout(height=1000)
+    fig.update_layout(height=450)
 
     app = showDash([
             html.H1("Aufgabe 44"),
@@ -102,44 +102,63 @@ def aufgabe44(df: pd.DataFrame):
 def aufgabe45(df, fig):
     app = showDash([
         html.H1("Aufgabe 45"),
-        html.H2("Mehrere Graphen darstellen"),
-        dcc.Dropdown(
-            id="gender_dropdown",
-            options=[
-                {"label": "Men", "value": "Men"},
-                {"label": "Women", "value": "Women"},
-            ],
-            value="Men"
-        ),
-        dcc.Graph(
-            id="bar",
-        ),
-        dcc.Slider(
-            id='year_slider',
-            min=df['Year'].min(),
-            max=df['Year'].max(),
-            value=df['Year'].max(),
-            marks={str(int(year)): str(int(year)) for year in df["Year"].unique()},
-            step=4
-        ),
-        html.H3("Grafik Nummer 2"),
-        dcc.Graph(
-            id="heatmap",
-            figure=fig,
-        ),
-        html.H3("Grafik Nummer 3"),
-        dcc.Graph(
-            id="line",
-            figure=px.scatter(
-                    df,
-                    x="Country",
-                    y="Discipline",
-                    color="Medal",
-                    # Farben für Punkte: Gold = FFD700 | Silber = C0C0C0 | Bronze = CD7F32
-                    color_discrete_sequence=["#FFD700", "#C0C0C0", "#CD7F32"]
+        html.Div(
+            children=[
+                html.H2("Mehrere Graphen darstellen"),
+                dcc.Dropdown(
+                    id="gender_dropdown",
+                    options=[
+                        {"label": "Men", "value": "Men"},
+                        {"label": "Women", "value": "Women"},
+                    ],
+                    value="Men"
                 ),
+                dcc.Graph(
+                    id="bar",
+                ),
+                dcc.Slider(
+                    id='year_slider',
+                    min=df['Year'].min(),
+                    max=df['Year'].max(),
+                    value=df['Year'].max(),
+                    marks={str(int(year)): str(int(year)) for year in df["Year"].unique()},
+                    step=4
+                ),
+            ],
         ),
-    ])
+        html.Div(
+            children=[
+                html.Div(
+                    children=[
+                        html.H3("Grafik Nummer 2"),
+                        dcc.Graph(
+                            id="heatmap",
+                            figure=fig,
+                        ),
+                    ],
+                    className="graph"
+                ),
+                html.Div(
+                    children=[
+                        html.H3("Grafik Nummer 3"),
+                        dcc.Graph(
+                            id="line",
+                            figure=px.scatter(
+                                    df,
+                                    x="Country",
+                                    y="Discipline",
+                                    color="Medal",
+                                    # Farben für Punkte: Gold = FFD700 | Silber = C0C0C0 | Bronze = CD7F32
+                                    color_discrete_sequence=["#FFD700", "#C0C0C0", "#CD7F32"]
+                                ),
+                        ),
+                    ],
+                    className="graph"
+                )
+            ],
+            className="flex"
+        )
+    ], "aufgabe45")
 
     @app.callback(
         [Output("bar", "figure")],
