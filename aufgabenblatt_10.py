@@ -17,13 +17,16 @@ import pandas as pd
 
 def filter_data(df: pd.DataFrame, land: str, jahr: int, sportart: str) -> pd.DataFrame:
     if land is not None:
-        df = df[df["Country" == land]]
+        df = df[df["Country"] == land]
     if jahr is not None:
-        df = df[df["Year" == jahr]]
+        df = df[df["Year"] == jahr]
     if sportart is not None:
-        df = df[df["Discipline" == sportart]]
+        df = df[df["Discipline"] == sportart]
     return df
 
+def group_medals_by_country(df: pd.DataFrame, country: str) -> pd.DataFrame:
+    df = filter_data(df, country, None, None)
+    return df
 
 def filter_data2(df: pd.DataFrame, string: str) -> pd.DataFrame:
     df = df[df["Athlete"].str.contains(string)]
@@ -37,3 +40,7 @@ if __name__ == "__main__":
 
     # Aufgabe 47
     searched_data_frame = filter_data2(data, "Ale")
+
+    # Aufgabe 48
+    medals_grouped_by_country = group_medals_by_country(data, "Switzerland")
+    print(medals_grouped_by_country)
