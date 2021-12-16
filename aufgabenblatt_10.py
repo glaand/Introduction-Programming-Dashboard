@@ -19,9 +19,9 @@ def filter_data(df: pd.DataFrame, land: str, jahr: int, sportart: str) -> pd.Dat
     if land is not None:
         df = df[df["Country" == land]]
     if jahr is not None:
-        df = df[df["Country" == land]]
+        df = df[df["Year" == jahr]]
     if sportart is not None:
-        df = df[df["Country" == land]]
+        df = df[df["Discipline" == sportart]]
     return df
 
 
