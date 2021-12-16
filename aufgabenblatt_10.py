@@ -7,6 +7,25 @@
 # =============================================================================
 """Aufgabenblatt 8"""
 
+
 # =============================================================================
 # Imports
 # =============================================================================
+from aufgabenblatt_9 import load_data
+import pandas as pd
+
+
+def filter_data(df: pd.DataFrame, land: str, jahr: int, sportart: str) -> pd.DataFrame:
+    if land is not None:
+        df = df[df["Country" == land]]
+    if jahr is not None:
+        df = df[df["Country" == land]]
+    if sportart is not None:
+        df = df[df["Country" == land]]
+    return df
+
+
+if __name__ == "__main__":
+    data = load_data()
+    # Aufgabe 46
+    result_data_frame = filter_data(data, "Schweiz", 2008, "Swimming")
