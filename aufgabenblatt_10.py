@@ -25,7 +25,15 @@ def filter_data(df: pd.DataFrame, land: str, jahr: int, sportart: str) -> pd.Dat
     return df
 
 
+def filter_data2(df: pd.DataFrame, string: str) -> pd.DataFrame:
+    df = df[df["Athlete"].str.contains(string)]
+    return df
+
+
 if __name__ == "__main__":
     data = load_data()
     # Aufgabe 46
-    result_data_frame = filter_data(data, "Schweiz", 2008, "Swimming")
+    result_data_frame = filter_data(data, "Switzerland", 2008, "Swimming")
+
+    # Aufgabe 47
+    searched_data_frame = filter_data2(data, "Ale")
