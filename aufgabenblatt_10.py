@@ -13,7 +13,6 @@
 # =============================================================================
 from aufgabenblatt_9 import load_data
 import pandas as pd
-import re
 
 
 def filter_data(df: pd.DataFrame, land: str, jahr: int, sportart: str) -> pd.DataFrame:
@@ -26,17 +25,19 @@ def filter_data(df: pd.DataFrame, land: str, jahr: int, sportart: str) -> pd.Dat
     return df
 
 
-def group_medals_by_country(df: pd.DataFrame, country: str) -> pd.DataFrame:
-    df = filter_data(df, country, None, None)
-    return df
-
-
 def filter_data2(df, string: str):
     pattern = ""
     for char in string:
         pattern += f"(?=.*{str(char)})"
     pattern += ".*"
     return df[df["Athlete"].str.match(pattern)]
+
+
+def group_medals_by_country(df: pd.DataFrame, country: str) -> pd.DataFrame:
+    df = filter_data(df, country, None, None)
+    df = df.groupby(["Country", "Medal"]).size().reset_index(name="Count")
+    df = df.drop("Country", axis=1).set_index("Medal").transpose()
+    return df
 
 
 if __name__ == "__main__":
@@ -47,7 +48,7 @@ if __name__ == "__main__":
 
     # Aufgabe 46
     result_data_frame = filter_data(data, "Switzerland", 2008, "Cycling")
-    #print(f"Aufgabe 46: \n{result_data_frame.head()}")
+    print(f"Aufgabe 46: \n{result_data_frame.head()}")
 
     # Aufgabe 47
     searched_data_frame = filter_data2(data, "zv")
@@ -55,4 +56,4 @@ if __name__ == "__main__":
 
     # Aufgabe 48
     medals_grouped_by_country = group_medals_by_country(data, "Switzerland")
-    #print(f"Aufgabe 48: \n{medals_grouped_by_country.head()}")
+    print(f"Aufgabe 48: \n{medals_grouped_by_country.head()}")
