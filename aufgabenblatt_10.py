@@ -53,6 +53,7 @@ def aufgabe49(data: pd.DataFrame):
         html.Div(
             children=[
                 html.H3("Grafik 1 - USA fällt 1980 aus"),
+                html.P("Grund: 1980 Boykott der Sommerolympiade"),
                 dcc.Graph(
                     id="USA_Bar",
                     figure=plotCountPerYearsForCountry(df_usa, "Anzahl Medaillen über alle Jahre USA")
@@ -62,6 +63,7 @@ def aufgabe49(data: pd.DataFrame):
         html.Div(
             children=[
                 html.H3("Grafik 2 - Soviet Union fällt 1984 aus und ab 1988 keine Medaillen mehr"),
+                html.P("Grund: 1984 Boykott der Sommerolympiade und nachfolgend der Zerfall der Soviet Union."),
                 dcc.Graph(
                     id="SOV_bar",
                     figure=plotCountPerYearsForCountry(df_sov, "Anzahl Medaillen über alle Jahre Soviet Union")
@@ -71,6 +73,7 @@ def aufgabe49(data: pd.DataFrame):
         html.Div(
             children=[
                 html.H3("Grafik 3 - West Deutschland fällt 1980 aus und holt ab 1988 keine Medaillen mehr"),
+                html.P("Grund: 1980 Boykott der Sommerolympiade, dann Zusammenschluss mit Ostdeutschland"),
                 dcc.Graph(
                     id="WEST_GER_bar",
                     figure=plotCountPerYearsForCountry(df_wger, "Anzahl Medaillen über alle Jahre West Deutschland")
@@ -80,6 +83,7 @@ def aufgabe49(data: pd.DataFrame):
         html.Div(
             children=[
                 html.H3("Grafik 4 - Ost Deutschland fällt 1984 aus und holt ab 1988 keine Medaillen mehr"),
+                html.P("Grund: 1984 Boykott der Sommerolympiade und nachfolgend der Zerfall der Soviet Union und Zusammenschluss mit Westdeutschland."),
                 dcc.Graph(
                     id="EAST_GER_bar",
                     figure=plotCountPerYearsForCountry(df_eger, "Anzahl Medaillen über alle Jahre Ost Deutschland")
