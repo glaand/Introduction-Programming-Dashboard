@@ -55,7 +55,7 @@ def aufgabe49(data: pd.DataFrame):
                 html.H3("Grafik 1 - USA fällt 1980 aus"),
                 dcc.Graph(
                     id="USA_Bar",
-                    figure=plotCountPerYearsForCountry(df_usa)
+                    figure=plotCountPerYearsForCountry(df_usa, "Anzahl Medaillen über alle Jahre USA")
                 )
             ]
         ),
@@ -64,7 +64,7 @@ def aufgabe49(data: pd.DataFrame):
                 html.H3("Grafik 2 - Soviet Union fällt 1984 aus und ab 1988 keine Medaillen mehr"),
                 dcc.Graph(
                     id="SOV_bar",
-                    figure=plotCountPerYearsForCountry(df_sov)
+                    figure=plotCountPerYearsForCountry(df_sov, "Anzahl Medaillen über alle Jahre Soviet Union")
                 )
             ]
         ),
@@ -73,7 +73,7 @@ def aufgabe49(data: pd.DataFrame):
                 html.H3("Grafik 3 - West Deutschland fällt 1980 aus und holt ab 1988 keine Medaillen mehr"),
                 dcc.Graph(
                     id="WEST_GER_bar",
-                    figure=plotCountPerYearsForCountry(df_wger)
+                    figure=plotCountPerYearsForCountry(df_wger, "Anzahl Medaillen über alle Jahre West Deutschland")
                 )
             ]
         ),
@@ -82,7 +82,7 @@ def aufgabe49(data: pd.DataFrame):
                 html.H3("Grafik 4 - Ost Deutschland fällt 1984 aus und holt ab 1988 keine Medaillen mehr"),
                 dcc.Graph(
                     id="EAST_GER_bar",
-                    figure=plotCountPerYearsForCountry(df_eger)
+                    figure=plotCountPerYearsForCountry(df_eger, "Anzahl Medaillen über alle Jahre Ost Deutschland")
                 )
             ]
         ),
@@ -92,6 +92,7 @@ def aufgabe49(data: pd.DataFrame):
                 dcc.Graph(
                     id="Countries_All_Years",
                     figure=px.bar(df_dis.tail(20),
+                                  title="Top 20 Länder",
                                   x="Country",
                                   y="Count")
                 )
@@ -119,9 +120,10 @@ def normalizeDataFrame(df: pd.DataFrame) -> pd.DataFrame:
     return normalizedDataFrame
 
 
-def plotCountPerYearsForCountry(df: pd.DataFrame):
+def plotCountPerYearsForCountry(df: pd.DataFrame, title: str):
     figure = px.bar(
         df,
+        title=title,
         x="Year",
         y="Count"
     )
