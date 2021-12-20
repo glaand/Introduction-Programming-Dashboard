@@ -137,6 +137,7 @@ def aufgabe49(data: pd.DataFrame):
         )
     ])
 
+
 def diagonalSort(M):
     y, x = len(M), len(M[0])
     for i in range(2-y, x-1):
@@ -146,54 +147,39 @@ def diagonalSort(M):
             M[j][i+j], k = diag[k], k + 1
     return M
 
+
+def makeFigure(matrix):
+    fig = px.imshow(matrix, height=250)
+    fig.update_coloraxes(showscale=False)
+    fig.update_xaxes(visible=False)
+    fig.update_yaxes(visible=False)
+    fig.update_layout(
+        margin=dict(l=10, r=10, t=10, b=10),
+        paper_bgcolor="LightSteelBlue",
+    )
+    return fig
+
+
 def aufgabe50(data: pd.DataFrame):
     matrix_43 = aufgabe43(getCountriesByDiscipline(data))
 
     # Heatmap for unsorted matrix from exercise 43
-    fig_43 = px.imshow(matrix_43, height=250)
-    fig_43.update_coloraxes(showscale=False)
-    fig_43.update_xaxes(visible=False)
-    fig_43.update_yaxes(visible=False)
-    fig_43.update_layout(
-        margin=dict(l=10, r=10, t=10, b=10),
-        paper_bgcolor="LightSteelBlue",
-    )
+    fig_43 = makeFigure(matrix_43)
 
     # Heatmap for sorted matrix from exercise 43
     matrix_43_sorted = matrix_43.loc[:, matrix_43.max().sort_values().index]
     matrix_43_sorted = matrix_43_sorted.iloc[np.argsort(np.diag(matrix_43_sorted))]
-    fig_43_sorted = px.imshow(matrix_43_sorted, height=250)
-    fig_43_sorted.update_coloraxes(showscale=False)
-    fig_43_sorted.update_xaxes(visible=False)
-    fig_43_sorted.update_yaxes(visible=False)
-    fig_43_sorted.update_layout(
-        margin=dict(l=10, r=10, t=10, b=10),
-        paper_bgcolor="LightSteelBlue",
-    )
+    fig_43_sorted = makeFigure(matrix_43_sorted)
 
     matrix_44 = aufgabe44(data)[2]
 
     # Heatmap for unsorted matrix from exercise 44
-    fig_44 = px.imshow(matrix_44, height=250)
-    fig_44.update_coloraxes(showscale=False)
-    fig_44.update_xaxes(visible=False)
-    fig_44.update_yaxes(visible=False)
-    fig_44.update_layout(
-        margin=dict(l=10, r=10, t=10, b=10),
-        paper_bgcolor="LightSteelBlue",
-    )
+    fig_44 = makeFigure(matrix_44)
 
     # Heatmap for sorted matrix from exercise 44
     matrix_44_sorted = matrix_44.loc[:, matrix_44.max().sort_values().index]
     matrix_44_sorted = matrix_44_sorted.iloc[np.argsort(np.diag(matrix_44_sorted))]
-    fig_44_sorted = px.imshow(matrix_44_sorted, height=250)
-    fig_44_sorted.update_coloraxes(showscale=False)
-    fig_44_sorted.update_xaxes(visible=False)
-    fig_44_sorted.update_yaxes(visible=False)
-    fig_44_sorted.update_layout(
-        margin=dict(l=10, r=10, t=10, b=10),
-        paper_bgcolor="LightSteelBlue",
-    )
+    fig_44_sorted = makeFigure(matrix_44_sorted)
 
     return showDash([
         html.H1("Aufgabe 50"),
@@ -264,15 +250,15 @@ def main():
 
     # Aufgabe 46
     result_data_frame = filter_data(data, "Switzerland", 2008, "Cycling")
-    #print(f"Aufgabe 46: \n{result_data_frame.head()}")
+    print(f"Aufgabe 46: \n{result_data_frame.head()}")
 
     # Aufgabe 47
     searched_data_frame = filter_data2(data, "zv")
-    #print(f"Aufgabe 47: \n{searched_data_frame['Athlete']}")
+    print(f"Aufgabe 47: \n{searched_data_frame['Athlete']}")
 
     # Aufgabe 48
     medals_grouped_by_country = group_medals_by_country(data, "Switzerland")
-    #print(f"Aufgabe 48: \n{medals_grouped_by_country.head()}")
+    print(f"Aufgabe 48: \n{medals_grouped_by_country.head()}")
 
     # Aufgabe 49
     # 1. Grafik: USA Balkendiagramm über die Jahre
@@ -280,12 +266,12 @@ def main():
     # 3. Grafik: West Germany Balkendiagramm
     # 4. Grafik: East Germany Balkendiagramm
     # 5. Grafik: Count Medals for each Country over ALL Years
-    #app = aufgabe49(data)
+    app49 = aufgabe49(data)
 
     # Aufgabe 50
-    app = aufgabe50(data)
+    app50 = aufgabe50(data)
 
-    app.run_server(debug=True, host="0.0.0.0", port=9999)
+    app50.run_server(debug=True, host="0.0.0.0", port=9999)
 
 
 if __name__ == "__main__":
