@@ -96,7 +96,7 @@ def aufgabe44(df: pd.DataFrame):
                 figure=fig,
             ),
         ])
-    return app, fig
+    return app, fig, matrix
 
 
 def aufgabe45(df, fig):
