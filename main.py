@@ -1,9 +1,6 @@
 import dash
-from numpy.lib.npyio import load
 import dash_bootstrap_components as dbc
-import dash_table as dt
-import dash_html_components as html
-import dash_core_components as dcc
+from dash import dash_table as dt, html, dcc
 import plotly.express as px
 from dash.dependencies import Input, Output
 import pandas as pd
@@ -90,15 +87,7 @@ def render_page_content(pathname):
             dt.DataTable(
                 id='tbl', data=df.to_dict('records'),
                 columns=[{"name": i, "id": i} for i in df.columns],
-                style_header={
-                    'backgroundColor': 'rgb(30, 30, 30)',
-                    'color': 'white'
-                },
                 filter_action='native',
-                style_data={
-                    'backgroundColor': 'rgb(50, 50, 50)',
-                    'color': 'white'
-                },
             ),
         ]
     elif pathname == "/a-36":
