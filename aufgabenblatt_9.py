@@ -100,7 +100,7 @@ def aufgabe44(df: pd.DataFrame):
 
 
 def aufgabe45(df, fig):
-    app = showDash([
+    app, server = showDash([
         html.H1("Aufgabe 45"),
         html.Div(
             children=[
@@ -187,7 +187,7 @@ def main():
     # aufgabe41(df)
     # aufgabe42(df)
     # aufgabe43(getCountriesByDiscipline(df))
-    app2, fig = aufgabe44(df)
+    app2, fig, matrix = aufgabe44(df)
     app = aufgabe45(df, fig)
 
     app.run_server(debug=True, host="0.0.0.0", port=9999)
