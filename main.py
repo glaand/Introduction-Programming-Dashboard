@@ -480,16 +480,39 @@ def render_page_content(pathname):
         ]
         return prepareLayout
     if pathname == "/a-49":
-        # TODO --> Aufgabenstellung hinzufügen und Titel zentrieren
         from aufgabenblatt_10 import aufgabe49
         app, _ = aufgabe49(df.dropna())
-        prepareLayout = app.layout
+        layout = app.layout
+        prepareLayout = [
+            html.H1('Aufgabe 49 - Anwendungsbeispiele', style={'textAlign': 'center'}),
+            html.P("""
+                Laden Sie den Olympia-Datensatz in Ihr Dashboard. Nutzen Sie die implementierten Filter und
+                Aggregationen, sowie die interaktiven Visualisierungen, um den Datensatz zu explorieren. Beschreiben Sie
+                5 Muster oder Anomalien in dem Olympia-Datensatz, die Sie mit Ihrem Dashboard herausgefunden haben.
+                Bei den visuellen Mustern oder Anomalien sollten Sie auch Screenshots ins Lösungs-pdf hinzufügen. (5 P.)
+            """),
+            html.Hr(),
+            html.Div(children=[graph for graph in layout.children[1:]]),
+        ]
         return prepareLayout
     if pathname == "/a-50":
-        # TODO --> Aufgabenstellung hinzufügen und Titel zentrieren
+        # TODO --> graphs 1 & 2 next to each other
         from aufgabenblatt_10 import aufgabe50
         app, _ = aufgabe50(df.dropna())
-        prepareLayout = app.layout
+        layout = app.layout
+        prepareLayout = [
+            html.H1('Aufgabe 50 - Sortierung der Matrix aus Aufgaben 43 und 44', style={'textAlign': 'center'}),
+            html.P("""
+                Implementieren Sie eine Sortierung auf zwei Dimensionen (Spalten und Zeilen). Hierzu gibt es zahlreiche
+                Möglichkeiten, aber um Ihnen die Aufgabe zu erleichtern, können Sie sich selbst ein Sortierkriterium
+                überlegen und die 2D Datenstruktur sortieren. Dennoch finden Sie in einem Forschungspapier auf Moodle
+                technisch ausgereifte algorithmische Lösungen (für den Fall, dass Sie eine effektive Lösung implementieren
+                möchten). Binden Sie einen Screenshot in das Lösungs-pdf ein, welches die Matrix vor und nach der
+                Sortierung zeigt. Ein Sortierbeispiel einer Matrix finden Sie oben in den beiden Abbildungen! (5 P.)
+            """),
+            html.Hr(),
+            html.Div(children=[graph for graph in layout.children[1].children[1:]]),
+        ]
         return prepareLayout
     return html.Div(
         dbc.Container(
