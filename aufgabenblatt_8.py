@@ -100,12 +100,13 @@ def exercise37():
     row, col = getNumRowAndCol(df)
     print(f"{row} Datensätze mit {col} Spalten.")
 
-def exercise38():
+def exercise38(toPrint=True):
     # Exercise 38
     df = load_data()
     filteredByCountry = filterDF(data=df, column="Country", key="Switzerland")
     filteredByDiscipline = filterDF(data=df, column="Discipline", key="Judo")
-    print(f"a) Daten gefiltert nach dem Land Schweiz: \n{filteredByCountry} \nb) Daten gefiltert nach Disciplin Judo: \n{filteredByDiscipline}")
+    if toPrint:
+        print(f"a) Daten gefiltert nach dem Land Schweiz: \n{filteredByCountry} \nb) Daten gefiltert nach Disciplin Judo: \n{filteredByDiscipline}")
 
     app = showDash([
         html.P("Aufgabe 38"),

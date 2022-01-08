@@ -75,7 +75,7 @@ app.layout = html.Div([
 
 @app.callback(
     Output("page-content", "children"),
-    [Input("url", "pathname")]
+    Input("url", "pathname"),
 )
 def render_page_content(pathname):
     df = pd.read_csv('./datasets/data.csv', encoding="ISO-8859-1")
@@ -138,9 +138,8 @@ def render_page_content(pathname):
                 ''')
         ]
     elif pathname == "/a-38":
-        print("38")
         from aufgabenblatt_8 import exercise38
-        tmpApp = exercise38()
+        tmpApp = exercise38(False)
         layout = tmpApp[0].layout
         return [
             html.H1('Aufgabe 38', style={'textAlign': 'center'}),
