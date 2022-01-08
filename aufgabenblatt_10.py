@@ -40,6 +40,7 @@ def group_medals_by_country(df: pd.DataFrame, country: str) -> pd.DataFrame:
     df = filter_data(df, country, None, None)
     df = df.groupby(["Country", "Medal"]).size().reset_index(name="Count")
     df = df.drop("Country", axis=1).set_index("Medal").transpose()
+    df = df.reindex(columns=["Bronze", "Silver", "Gold"])
     return df
 
 

@@ -23,7 +23,7 @@ def load_data(path=None) -> pd.DataFrame:
     # Data is loaded from GitHub Repo
     if path is None:
         path = "https://raw.githubusercontent.com/glaand/Introduction-Programming-Dashboard/main/datasets/data.csv"
-    return pd.read_csv(path).dropna()
+    return pd.read_csv(path, encoding="ISO-8859-1").dropna()
 
 
 def getSortedListByColumnName(df: pd.DataFrame, columnName: str) -> list:

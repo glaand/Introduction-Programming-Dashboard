@@ -78,12 +78,12 @@ app.layout = html.Div([
     [Input("url", "pathname")]
 )
 def render_page_content(pathname):
+    df = pd.read_csv('./datasets/data.csv', encoding="ISO-8859-1")
     if pathname == "/":
         return [
             html.H1('Startseite', style={'textAlign': 'center'})
         ]
     elif pathname == "/datensatz":
-        df = pd.read_csv('./datasets/data.csv', encoding="ISO-8859-1")
         return [
             html.H1('Datensatz', style={'textAlign': 'center'}),
             dt.DataTable(
@@ -138,6 +138,7 @@ def render_page_content(pathname):
                 ''')
         ]
     elif pathname == "/a-38":
+        print("38")
         from aufgabenblatt_8 import exercise38
         tmpApp = exercise38()
         layout = tmpApp[0].layout
@@ -161,6 +162,7 @@ def render_page_content(pathname):
             layout
         ]
     elif pathname == "/a-39":
+        print("39")
         from aufgabenblatt_8 import exercise39
         tmpApp = exercise39()
         layout = tmpApp[0].layout
@@ -369,6 +371,125 @@ def render_page_content(pathname):
             fig.update_xaxes(type='category')
             return fig,
 
+        return prepareLayout
+    elif pathname == "/a-46":
+        # TODO --> make responsive with 3 dropdown (at datatable, change fixed values to values from dropdown)
+        from aufgabenblatt_10 import filter_data
+        country_options = [{"label": i, "value": i} for i in df["Country"].dropna().unique()]
+        year_options = [{"label": i, "value": i} for i in df["Year"].dropna().unique()]
+        athlete_options = [{"label": i, "value": i} for i in df["Athlete"].dropna().unique()]
+        prepareLayout = [
+            html.H1('Aufgabe 46 - Filtern ', style={'textAlign': 'center'}),
+            html.P("""
+                    Implementieren Sie einen Filter als Python-Funktion, die drei Parameter als Eingabe akzeptiert, die
+                    Olympia-Daten nach Land, Jahr und Sportart filtert und das gefilterte DataFrame zurückliefert. Gibt der
+                    Nutzer kein Land, kein Jahr oder keine Sportart an, so wird auf dieser der drei Datendimensionen nicht
+                    gefiltert. (4 P.)
+                """),
+            html.Hr(),
+            dcc.Dropdown(
+                id='country-dropdown',
+                options=country_options,
+                value=country_options[0]["value"]
+            ),
+            dcc.Dropdown(
+                id='year-dropdown',
+                options=year_options,
+                value=year_options[0]["value"]
+            ),
+            dcc.Dropdown(
+                id='athlete-dropdown',
+                options=athlete_options,
+                value=athlete_options[0]["value"]
+            ),
+            html.Br(),
+            dt.DataTable(
+                id='46tbl', data=filter_data(df, "Switzerland", 2008, "Cycling").to_dict('records'),
+                columns=[{"name": i, "id": i} for i in df.columns],
+            ),
+        ]
+        return prepareLayout
+    elif pathname == "/a-47":
+        # TODO --> Make input of filterdata2 with inputfield
+        from aufgabenblatt_10 import filter_data2
+        prepareLayout = [
+            html.H1('Aufgabe 47 - Filtern 2', style={'textAlign': 'center'}),
+            html.P("""
+                            Sie sollen einen weiteren Filter als Python-Funktion implementieren, der eine beliebige Zeichenkette als
+                            Argument annimmt und alle Sportlernamen ausgibt, in denen die Zeichen in der angegebenen
+                            Zeichenkette in beliebiger Reihenfolge vorkommen. Wenn man also nach „imch“ filtert, so ist der Name
+                            „Michael“ ein gültiges Filterergebnis. Die Funktion soll entsprechend wieder das gefilterte DataFrame
+                            zurückliefern (2 P.)
+                        """),
+            html.Hr(),
+            dcc.Input(
+                id="search_input",
+                type="text",
+                placeholder="Search Athlete",
+            ),
+            dt.DataTable(
+                id="47tbl",
+                data=filter_data2(df.dropna(), "zv").to_dict("records"),
+                columns=[{"name": "Athlete", "id": "Athlete"}],
+            )
+        ]
+        return prepareLayout
+    if pathname == "/a-48":
+        # TODO --> make responsive with dropdown selected value
+        # TODO --> adjust colors of bar chart
+        from aufgabenblatt_10 import group_medals_by_country
+        country_options = [{"label": i, "value": i} for i in df["Country"].dropna().unique()]
+        medalCount = group_medals_by_country(df.dropna(), "Switzerland")
+        print(medalCount)
+        prepareLayout = [
+            html.H1('Aufgabe 48 - Aggregation', style={'textAlign': 'center'}),
+            html.P("""
+                                    Sie sollen einen weiteren Filter als Python-Funktion implementieren, der eine beliebige Zeichenkette als
+                                    Argument annimmt und alle Sportlernamen ausgibt, in denen die Zeichen in der angegebenen
+                                    Zeichenkette in beliebiger Reihenfolge vorkommen. Wenn man also nach „imch“ filtert, so ist der Name
+                                    „Michael“ ein gültiges Filterergebnis. Die Funktion soll entsprechend wieder das gefilterte DataFrame
+                                    zurückliefern (2 P.)
+                                """),
+            html.Hr(),
+            dcc.Dropdown(
+                id='country-dropdown',
+                options=country_options,
+                value=country_options[0]["value"]
+            ),
+            dt.DataTable(
+                id="48tbl",
+                data=medalCount.to_dict("records"),
+                columns=[{"name": "Bronze", "id": "Bronze"},
+                         {"name": "Silver", "id": "Silver"},
+                         {"name": "Gold", "id": "Gold"}],
+            ),
+            html.Div(
+                children=[
+                    dcc.Graph(
+                        id="medals_per_country",
+                        figure=go.Figure(data=[go.Bar(
+                                x=medalCount.columns,
+                                y=medalCount.iloc[0].to_numpy(),
+                                text=medalCount.iloc[0].to_numpy(),
+                                textposition='auto',
+                                marker={"color": "#CD7F32"}
+                        )]),
+                    )
+                ]
+            ),
+        ]
+        return prepareLayout
+    if pathname == "/a-49":
+        # TODO --> Aufgabenstellung hinzufügen und Titel zentrieren
+        from aufgabenblatt_10 import aufgabe49
+        app, _ = aufgabe49(df.dropna())
+        prepareLayout = app.layout
+        return prepareLayout
+    if pathname == "/a-50":
+        # TODO --> Aufgabenstellung hinzufügen und Titel zentrieren
+        from aufgabenblatt_10 import aufgabe50
+        app, _ = aufgabe50(df.dropna())
+        prepareLayout = app.layout
         return prepareLayout
     return html.Div(
         dbc.Container(

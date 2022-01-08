@@ -245,30 +245,7 @@ a {
 .mapboxgl-canvas, .mapboxgl-map {
   min-width: 100%;
 }
-/* Dropdown colors*/
-.VirtualizedSelectOption {
-    background-color: #31302F;
-    color: white;
-}
 
-.VirtualizedSelectFocusedOption {
-    background-color: black;
-    font-size: 18px;
-    color: white;
-}
-.Select-control {
-    background-color: #31302F !important;
-}
-.Select-value {
-    background-color: #31302F;
-}
-/*This and the next was necessary, because dropdown color focused and unfocused was inconsistent */
-.Select-control.Select-value.Select-value-label, .has-value.is-pseudo-focused.Select--single>.Select-control .Select-value .Select-value-label{
-    color: white;
-}
-.has-value.Select--single>.Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single>.Select-control .Select-value .Select-value-label{
-    color: white;
-}
 /* Graph Control Objects ––––––––––––––––––––––––––––––––––––––––––––––––––*/
 .div-user-controls {
   padding-left: 55px;
