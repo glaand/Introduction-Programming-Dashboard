@@ -27,6 +27,7 @@ CONTENT_STYLE = {
     "margin-left": "18rem",
     "margin-right": "2rem",
     "padding": "2rem 1rem",
+    "color": "grey"
 }
 
 sidebar = html.Div(
@@ -98,6 +99,18 @@ def render_page_content(pathname):
     elif pathname == "/a-36":
         return [
                 html.H1('Aufgabe 36', style={'textAlign':'center'}),
+                html.P("""
+                    Für unser Dashboard-Projekt auf den letzten 3 Aufgabenblättern sollen Sie sich eine(n)
+                    Studentin/Studenten aus der Vorlesung suchen, mit der/dem Sie diese Projektaufgaben zusammen
+                    bearbeiten. Geben Sie den Namen der beiden Studierenden aus Ihrer Projektgruppe an. (1 P.)
+                """),
+                html.Hr(),
+                dcc.Markdown('''
+                ```
+                André Glatzl
+                Alexandru Schneider
+                ```
+                ''')
             ]
     return html.Div(
         dbc.Container(
