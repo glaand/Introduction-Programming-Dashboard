@@ -133,7 +133,6 @@ body {
  /* currently ems cause chrome bug misinterpreting rems on body element */
   line-height: 1.6;
   font-weight: 400;
-  color: rgb(50, 50, 50);
 }
 
 /* Typography –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -199,7 +198,6 @@ html, body{
 }
 
 body {
-  background-color: #1E1E1E;
   color: #d8d8d8;
   height: 100%;
   margin: 0;
