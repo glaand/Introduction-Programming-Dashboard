@@ -271,7 +271,8 @@ def main():
     # Aufgabe 50
     app50 = aufgabe50(data)
 
-    app50.run_server(debug=True, host="0.0.0.0", port=9999)
+    app, app.server = app50.run_server(debug=True, host="0.0.0.0", port=9999)
+    return app, app.server
 
 
 if __name__ == "__main__":
