@@ -72,7 +72,7 @@ def filterDF(**kwargs) -> pd.DataFrame:
 def showDash(elements: list, className=""):
     app = dash.Dash(__name__)
     app.layout = html.Div(elements, className=className)
-    return app
+    return app, app.server
 
 
 def getRows(df: pd.DataFrame, key: str = None) -> list:
