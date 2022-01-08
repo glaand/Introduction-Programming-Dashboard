@@ -90,6 +90,7 @@ def render_page_content(pathname):
                     'backgroundColor': 'rgb(30, 30, 30)',
                     'color': 'white'
                 },
+                filter_action='native',
                 style_data={
                     'backgroundColor': 'rgb(50, 50, 50)',
                     'color': 'white'
