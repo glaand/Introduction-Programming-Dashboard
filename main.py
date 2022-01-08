@@ -214,10 +214,10 @@ def render_page_content(pathname):
                 html.Hr(),
                 layout
             ]
-        @app.callback(
-            Output(component_id='line-chart', component_property='figure'),
-            Input(component_id='country', component_property='value'),
-        )
+        #@app.callback(
+        #    Output(component_id='line-chart', component_property='figure'),
+        #    Input(component_id='country', component_property='value'),
+        #)
         def update_graph(country):
             ctx = dash.callback_context
             print(ctx)
@@ -356,11 +356,11 @@ def render_page_content(pathname):
                 html.Hr(),
                 tmpApp.layout
             ]
-        @app.callback(
-            [Output("bar", "figure")],
-            [Input("gender_dropdown", "value"),
-            Input("year_slider", "value")]
-        )
+        #@app.callback(
+        #    [Output("bar", "figure")],
+        #    [Input("gender_dropdown", "value"),
+        #    Input("year_slider", "value")]
+        #)
         def updateBarGraph(gender, year_value):
             # Dataframe should contain, men/women and their respective medal count per year
             dff = df.groupby(["Year", "Gender"]).size().reset_index(name="Count")
