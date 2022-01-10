@@ -119,7 +119,7 @@ def exercise38(toPrint=True):
                 y="Discipline",
                 color="Medal",
                 # Farben für Punkte: Gold = FFD700 | Silber = C0C0C0 | Bronze = CD7F32
-                color_discrete_sequence=["#FFD700", "#C0C0C0", "#CD7F32"]
+                color_discrete_sequence=["#C0C0C0", "#CD7F32", "#FFD700"]
             )
 
         ),
@@ -145,7 +145,7 @@ def exercise39():
                 y="Discipline",
                 color="Medal",
                 # Farben für Punkte: Gold = FFD700 | Silber = C0C0C0 | Bronze = CD7F32
-                color_discrete_sequence=["#FFD700", "#C0C0C0", "#CD7F32"]
+                color_discrete_sequence=["#C0C0C0", "#CD7F32", "#FFD700"]
             )
         ),
         html.P("Histogramm von Anzahl Medaillen pro Land"),
