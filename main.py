@@ -90,7 +90,7 @@ def update_country_stats(country):
         y=medalCount.iloc[0].to_numpy(),
         text=medalCount.iloc[0].to_numpy(),
         textposition='auto',
-        marker={"color": "#CD7F32"}
+        marker_color=["#CD7F32", "#C0C0C0", "#FFD700"],
     )])
 
 
