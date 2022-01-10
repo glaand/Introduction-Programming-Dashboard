@@ -10,7 +10,7 @@ from aufgabenblatt_8 import exercise38
 from aufgabenblatt_9 import aufgabe45, aufgabe44, getSortedListByColumnName, aufgabe43, getCountriesByDiscipline
 from aufgabenblatt_10 import filter_data, filter_data2, group_medals_by_country, aufgabe50, aufgabe49
 
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = "Olympics Dashboard - FHGR CDS-201 (Alex & André)"
 
 # styling the sidebar
@@ -481,10 +481,8 @@ def render_page_content(pathname):
         ]
         return prepareLayout
     if pathname == "/a-48":
-        # TODO --> adjust colors of bar chart
         country_options = [{"label": i, "value": i} for i in df["Country"].dropna().unique()]
         medalCount = group_medals_by_country(df.dropna(), "Switzerland")
-        print(medalCount)
         prepareLayout = [
             html.H1('Aufgabe 48 - Aggregation', style={'textAlign': 'center'}),
             html.P("""
