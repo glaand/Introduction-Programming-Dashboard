@@ -72,12 +72,84 @@ app.layout = html.Div([
     content
 ])
 
+@app.callback(
+    Output(component_id='line-chart', component_property='figure'),
+    Input(component_id='country', component_property='value'),
+)
+def update_graph(country):
+    df = load_data()
+    df2 = df.groupby(["Country", "Year", "Medal"]).size().reset_index(name="count")
+    dff = df2.copy()
+    dff2 = dff[dff["Country"] == country]
+    for y in range(1976, 2012, 4):
+        a_row = pd.Series({"Country": country, "Year": y, "Medal": "Bronze", "count": 0})
+        row_df = pd.DataFrame([a_row])
+        dff2 = pd.concat([row_df, dff2], ignore_index=True)
+    dff2 = dff2.loc[dff2.reset_index().groupby(["Country", "Year", "Medal"])["count"].idxmax()]
+    bronze_x = get_axis(dff2, "Bronze", "Year")
+    bronze_y = get_axis(dff2, "Bronze", "count").to_numpy()
+    silver_x = get_axis(dff2, "Silver", "Year")
+    silver_y = get_axis(dff2, "Silver", "count").to_numpy()
+    gold_x = get_axis(dff2, "Gold", "Year")
+    gold_y = get_axis(dff2, "Gold", "count").to_numpy()
+
+    fig = go.Figure(data=[
+        go.Bar(
+            name='Bronze',
+            x=bronze_x,
+            y=bronze_y,
+            marker={"color": "#CD7F32"},
+        ),
+        go.Bar(
+            name='Silver',
+            x=silver_x,
+            y=silver_y,
+            marker={"color": "#C0C0C0"},
+        ),
+        go.Bar(
+            name='Gold',
+            x=gold_x,
+            y=gold_y,
+            marker={"color": "#FFD700"}
+        ),
+    ])
+    fig.update_xaxes(title="Olympic year", type="category")
+    fig.update_yaxes(title="Medal count", dtick=1, type="log")
+
+    # Change the bar mode
+    fig.update_layout(
+        barmode='stack'
+    )
+    return fig
+
+@app.callback(
+    [Output("bar", "figure")],
+    [Input("gender_dropdown", "value"),
+    Input("year_slider", "value")]
+)
+def updateBarGraph(gender, year_value):
+    from aufgabenblatt_9 import aufgabe45, aufgabe44
+    df = load_data()
+    app2, fig, matrix = aufgabe44(df)
+    # Dataframe should contain, men/women and their respective medal count per year
+    dff = df.groupby(["Year", "Gender"]).size().reset_index(name="Count")
+    # select either male or female (men/women)
+    dff = dff[dff["Gender"] == gender]
+    # dataframe drops the years which arent needed
+    dff = dff.drop(dff[dff.Year > year_value].index)
+    fig = px.bar(dff,
+                    x="Year",
+                    y="Count",
+                    title=f"Anzahl Medaillen der {'Männer' if gender == 'Men' else 'Frauen'}", )
+    fig.update_xaxes(type='category')
+    return fig,
 
 @app.callback(
     Output("page-content", "children"),
     Input("url", "pathname"),
 )
 def render_page_content(pathname):
+    global app
     df = pd.read_csv('./datasets/data.csv', encoding="utf-8")
     if pathname == "/":
         return [
@@ -191,8 +263,6 @@ def render_page_content(pathname):
     elif pathname == "/a-40":
         from aufgabenblatt_8 import exercise40
         layout = exercise40().layout
-        df = load_data()
-        df2 = df.groupby(["Country", "Year", "Medal"]).size().reset_index(name="count")
         prepareLayout = [
             html.H1('Aufgabe 40 (NEEDS HARD RELOAD TO WORK - CTRL + R)', style={'textAlign': 'center'}),
             html.P("""
@@ -206,57 +276,6 @@ def render_page_content(pathname):
             html.Hr(),
             layout
         ]
-
-        # @app.callback(
-        #    Output(component_id='line-chart', component_property='figure'),
-        #    Input(component_id='country', component_property='value'),
-        # )
-        def update_graph(country):
-            ctx = dash.callback_context
-            print(ctx)
-
-            dff = df2.copy()
-            dff2 = dff[dff["Country"] == country]
-            for y in range(1976, 2012, 4):
-                a_row = pd.Series({"Country": country, "Year": y, "Medal": "Bronze", "count": 0})
-                row_df = pd.DataFrame([a_row])
-                dff2 = pd.concat([row_df, dff2], ignore_index=True)
-            dff2 = dff2.loc[dff2.reset_index().groupby(["Country", "Year", "Medal"])["count"].idxmax()]
-            bronze_x = get_axis(dff2, "Bronze", "Year")
-            bronze_y = get_axis(dff2, "Bronze", "count").to_numpy()
-            silver_x = get_axis(dff2, "Silver", "Year")
-            silver_y = get_axis(dff2, "Silver", "count").to_numpy()
-            gold_x = get_axis(dff2, "Gold", "Year")
-            gold_y = get_axis(dff2, "Gold", "count").to_numpy()
-
-            fig = go.Figure(data=[
-                go.Bar(
-                    name='Bronze',
-                    x=bronze_x,
-                    y=bronze_y,
-                    marker={"color": "#CD7F32"},
-                ),
-                go.Bar(
-                    name='Silver',
-                    x=silver_x,
-                    y=silver_y,
-                    marker={"color": "#C0C0C0"},
-                ),
-                go.Bar(
-                    name='Gold',
-                    x=gold_x,
-                    y=gold_y,
-                    marker={"color": "#FFD700"}
-                ),
-            ])
-            fig.update_xaxes(title="Olympic year", type="category")
-            fig.update_yaxes(title="Medal count", dtick=1, type="log")
-
-            # Change the bar mode
-            fig.update_layout(
-                barmode='stack'
-            )
-            return fig
 
         return prepareLayout
     elif pathname == "/a-41":
@@ -350,25 +369,6 @@ def render_page_content(pathname):
             html.Hr(),
             tmpApp.layout
         ]
-
-        # @app.callback(
-        #    [Output("bar", "figure")],
-        #    [Input("gender_dropdown", "value"),
-        #    Input("year_slider", "value")]
-        # )
-        def updateBarGraph(gender, year_value):
-            # Dataframe should contain, men/women and their respective medal count per year
-            dff = df.groupby(["Year", "Gender"]).size().reset_index(name="Count")
-            # select either male or female (men/women)
-            dff = dff[dff["Gender"] == gender]
-            # dataframe drops the years which arent needed
-            dff = dff.drop(dff[dff.Year > year_value].index)
-            fig = px.bar(dff,
-                         x="Year",
-                         y="Count",
-                         title=f"Anzahl Medaillen der {'Männer' if gender == 'Men' else 'Frauen'}", )
-            fig.update_xaxes(type='category')
-            return fig,
 
         return prepareLayout
     elif pathname == "/a-46":
