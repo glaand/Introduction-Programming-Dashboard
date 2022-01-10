@@ -78,7 +78,7 @@ app.layout = html.Div([
     Input("url", "pathname"),
 )
 def render_page_content(pathname):
-    df = pd.read_csv('./datasets/data.csv', encoding="ISO-8859-1")
+    df = pd.read_csv('./datasets/data.csv', encoding="utf-8")
     if pathname == "/":
         return [
             html.H1('Startseite', style={'textAlign': 'center'})
