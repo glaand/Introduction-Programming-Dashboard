@@ -73,6 +73,25 @@ app.layout = html.Div([
     content
 ])
 
+
+@app.callback(
+    Output(component_id='46tbl', component_property='data'),
+    [Input(component_id='country-dropdown', component_property='value'),
+     Input(component_id='year-dropdown', component_property='value'),
+     Input(component_id='sport-dropdown', component_property='value')]
+)
+def search(country, year, sport):
+    from aufgabenblatt_10 import filter_data
+    if country == "No Country":
+        country = None
+    if year == "No Year":
+        year = None
+    if sport == "No Sport":
+        sport = None
+    df = load_data().dropna()
+    return filter_data(df, country, year, sport).to_dict('records')
+
+
 @app.callback(
     Output(component_id='line-chart', component_property='figure'),
     Input(component_id='country', component_property='value'),
@@ -373,11 +392,13 @@ def render_page_content(pathname):
 
         return prepareLayout
     elif pathname == "/a-46":
-        # TODO --> make responsive with 3 dropdown (at datatable, change fixed values to values from dropdown)
         from aufgabenblatt_10 import filter_data
         country_options = [{"label": i, "value": i} for i in df["Country"].dropna().unique()]
         year_options = [{"label": i, "value": i} for i in df["Year"].dropna().unique()]
-        athlete_options = [{"label": i, "value": i} for i in df["Athlete"].dropna().unique()]
+        sport_options = [{"label": i, "value": i} for i in df["Sport"].dropna().unique()]
+        country_options.insert(0, {"label": "No Country", "value": "No Country"})
+        year_options.insert(0, {"label": "No Year", "value": "No Year"})
+        sport_options.insert(0, {"label": "No Sport", "value": "No Sport"})
         prepareLayout = [
             html.H1('Aufgabe 46 - Filtern ', style={'textAlign': 'center'}),
             html.P("""
@@ -391,22 +412,22 @@ def render_page_content(pathname):
                 dcc.Dropdown(
                 id='country-dropdown',
                 options=country_options,
-                value=country_options[0]["value"]
+                value="Switzerland"
                 ),
                 dcc.Dropdown(
                     id='year-dropdown',
                     options=year_options,
-                    value=year_options[0]["value"]
+                    value=2008
                 ),
                 dcc.Dropdown(
-                    id='athlete-dropdown',
-                    options=athlete_options,
-                    value=athlete_options[0]["value"]
+                    id='sport-dropdown',
+                    options=sport_options,
+                    value="Cycling"
                 ),
             ], className="responsive-dropdowns"),
             html.Br(),
             dt.DataTable(
-                id='46tbl', data=filter_data(df, "Switzerland", 2008, "Cycling").to_dict('records'),
+                id='46tbl', data=[],
                 columns=[{"name": i, "id": i} for i in df.columns],
             ),
         ]
@@ -498,7 +519,6 @@ def render_page_content(pathname):
         ]
         return prepareLayout
     if pathname == "/a-50":
-        # TODO --> graphs 1 & 2 next to each other
         from aufgabenblatt_10 import aufgabe50
         app, _ = aufgabe50(df.dropna())
         layout = app.layout
