@@ -75,12 +75,24 @@ app.layout = html.Div([
 
 
 @app.callback(
+    Output(component_id='47tbl', component_property='data'),
+    Input(component_id='search_input', component_property='value')
+)
+def search_athlethe(searchString):
+    from aufgabenblatt_10 import filter_data2
+    if searchString is None:
+        searchString = ""
+    df = load_data().dropna()
+    return filter_data2(df, searchString).to_dict("records")
+
+
+@app.callback(
     Output(component_id='46tbl', component_property='data'),
     [Input(component_id='country-dropdown', component_property='value'),
      Input(component_id='year-dropdown', component_property='value'),
      Input(component_id='sport-dropdown', component_property='value')]
 )
-def search(country, year, sport):
+def search_dropdown(country, year, sport):
     from aufgabenblatt_10 import filter_data
     if country == "No Country":
         country = None
@@ -284,7 +296,7 @@ def render_page_content(pathname):
         from aufgabenblatt_8 import exercise40
         layout = exercise40().layout
         prepareLayout = [
-            html.H1('Aufgabe 40 (NEEDS HARD RELOAD TO WORK - CTRL + R)', style={'textAlign': 'center'}),
+            html.H1('Aufgabe 40', style={'textAlign': 'center'}),
             html.P("""
                     Modifizieren Sie das Dashboard-Beispiel aus der Vorlesung, so dass Sie in einem Drop-Down-Menü ein
                     Land auswählen können und die Summe der Medaillengewinne über die Jahre visuell als Liniendiagramm
@@ -377,7 +389,7 @@ def render_page_content(pathname):
         app2, fig, matrix = aufgabe44(df)
         tmpApp = aufgabe45(df, fig)
         prepareLayout = [
-            html.H1('Aufgabe 45 (NEEDS HARD RELOAD TO WORK - CTRL + R)', style={'textAlign': 'center'}),
+            html.H1('Aufgabe 45', style={'textAlign': 'center'}),
             html.P("""
                     Erweitern Sie Ihr Dashboard aus Aufgabe 40 um (mindestens) zwei weitere Plotly Diagramme und um
                     (mindestens) eine weitere Eingabemöglichkeit (zum Beispiel einem Slider, einem Date Picker oder einem
@@ -452,7 +464,7 @@ def render_page_content(pathname):
             ),
             dt.DataTable(
                 id="47tbl",
-                data=filter_data2(df.dropna(), "zv").to_dict("records"),
+                data=[],
                 columns=[{"name": "Athlete", "id": "Athlete"}],
             )
         ]
