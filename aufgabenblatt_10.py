@@ -14,18 +14,19 @@ from aufgabenblatt_8 import showDash
 from aufgabenblatt_9 import load_data, aufgabe43, aufgabe44, getCountriesByDiscipline
 import pandas as pd
 import numpy as np
-from dash import html, dcc
+from dash import html, dcc, dash_table as dt
 import plotly.express as px
 
 
 def filter_data(df: pd.DataFrame, land: str, jahr: int, sportart: str) -> pd.DataFrame:
+    dff = df.copy()
     if land is not None:
-        df = df[df["Country"] == land]
+        dff = dff[dff["Country"] == land]
     if jahr is not None:
-        df = df[df["Year"] == jahr]
+        dff = dff[dff["Year"] == jahr]
     if sportart is not None:
-        df = df[df["Sport"] == sportart]
-    return df
+        dff = dff[dff["Sport"] == sportart]
+    return dff
 
 
 def filter_data2(df, string: str):
@@ -82,6 +83,8 @@ def aufgabe49(data: pd.DataFrame):
     df_wger = normalizeDataFrame(countMedalPerYearForCountry(data, "West Germany"))
     df_eger = normalizeDataFrame(countMedalPerYearForCountry(data, "East Germany"))
     df_dis = countDisciplinesPerYear(data).sort_values("Count")
+    df_male_female = data[data["Gender"] == "Men"]
+    df_male_female = df_male_female[df_male_female["Event_gender"] == "W"]
     return showDash([
         html.H1("Aufgabe 49"),
         html.Div(
@@ -126,7 +129,8 @@ def aufgabe49(data: pd.DataFrame):
         ),
         html.Div(
             children=[
-                html.H3("Grafik 5 - Soviet Union ist zweithöchster Medaillengewinner obwohl sie nur 3 mal teilgenommen haben!!"),
+                html.H3(
+                    "Grafik 5 - Soviet Union ist zweithöchster Medaillengewinner obwohl sie nur 3 mal teilgenommen haben!!"),
                 dcc.Graph(
                     id="Countries_All_Years",
                     figure=px.bar(df_dis.tail(20),
@@ -135,7 +139,32 @@ def aufgabe49(data: pd.DataFrame):
                                   y="Count")
                 )
             ]
-        )
+        ),
+        html.Div(
+            children=[
+                html.H3(
+                    "Grafik 6 - Mann bei den Frauen?"),
+                dt.DataTable(
+                    id='tbl', data=df_male_female.to_dict('records'),
+                    columns=[{"name": i, "id": i} for i in df_male_female.columns],
+                    style_data_conditional=[
+                        {
+                            'if': {
+                                'column_id': 'Gender',
+                            },
+                            'backgroundColor': '#ff0000',
+                            'color': 'white'
+                        },
+                        {
+                            'if': {
+                                'column_id': 'Event_gender',
+                            },
+                            'backgroundColor': '#ff0000',
+                            'color': 'white'
+                        }]
+                ),
+            ]
+        ),
     ])
 
 
@@ -272,7 +301,7 @@ def main():
     # Aufgabe 50
     app50 = aufgabe50(data)
 
-    return app50
+    return app49
 
 
 if __name__ == "__main__":

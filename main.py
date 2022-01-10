@@ -4,8 +4,11 @@ from dash import dash_table as dt, html, dcc
 import plotly.express as px
 from dash.dependencies import Input, Output
 import pandas as pd
-from aufgabenblatt_8 import load_data, get_axis
+from aufgabenblatt_8 import load_data, get_axis, exercise39, exercise40
 import plotly.graph_objects as go
+from aufgabenblatt_8 import exercise38
+from aufgabenblatt_9 import aufgabe45, aufgabe44, getSortedListByColumnName, aufgabe43, getCountriesByDiscipline
+from aufgabenblatt_10 import filter_data, filter_data2, group_medals_by_country, aufgabe50, aufgabe49
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
 app.title = "Olympics Dashboard - FHGR CDS-201 (Alex & André)"
@@ -74,18 +77,36 @@ app.layout = html.Div([
 ])
 
 
+# Aufgabe 48
+@app.callback(
+    Output(component_id='48tbl', component_property='data'),
+    Output(component_id="medals_per_country", component_property="figure"),
+    Input(component_id='country-dropdown', component_property='value')
+)
+def update_country_stats(country):
+    medalCount = group_medals_by_country(load_data().dropna(), country)
+    return medalCount.to_dict("records"), go.Figure(data=[go.Bar(
+        x=medalCount.columns,
+        y=medalCount.iloc[0].to_numpy(),
+        text=medalCount.iloc[0].to_numpy(),
+        textposition='auto',
+        marker={"color": "#CD7F32"}
+    )])
+
+
+# Aufgabe 47
 @app.callback(
     Output(component_id='47tbl', component_property='data'),
     Input(component_id='search_input', component_property='value')
 )
 def search_athlethe(searchString):
-    from aufgabenblatt_10 import filter_data2
     if searchString is None:
         searchString = ""
     df = load_data().dropna()
     return filter_data2(df, searchString).to_dict("records")
 
 
+# Aufgabe 46
 @app.callback(
     Output(component_id='46tbl', component_property='data'),
     [Input(component_id='country-dropdown', component_property='value'),
@@ -93,7 +114,6 @@ def search_athlethe(searchString):
      Input(component_id='sport-dropdown', component_property='value')]
 )
 def search_dropdown(country, year, sport):
-    from aufgabenblatt_10 import filter_data
     if country == "No Country":
         country = None
     if year == "No Year":
@@ -104,6 +124,7 @@ def search_dropdown(country, year, sport):
     return filter_data(df, country, year, sport).to_dict('records')
 
 
+# Aufgabe 40
 @app.callback(
     Output(component_id='line-chart', component_property='figure'),
     Input(component_id='country', component_property='value'),
@@ -154,15 +175,15 @@ def update_graph(country):
     )
     return fig
 
+
+# Aufgabe 45
 @app.callback(
     [Output("bar", "figure")],
     [Input("gender_dropdown", "value"),
-    Input("year_slider", "value")]
+     Input("year_slider", "value")]
 )
 def updateBarGraph(gender, year_value):
-    from aufgabenblatt_9 import aufgabe45, aufgabe44
     df = load_data()
-    app2, fig, matrix = aufgabe44(df)
     # Dataframe should contain, men/women and their respective medal count per year
     dff = df.groupby(["Year", "Gender"]).size().reset_index(name="Count")
     # select either male or female (men/women)
@@ -170,11 +191,12 @@ def updateBarGraph(gender, year_value):
     # dataframe drops the years which arent needed
     dff = dff.drop(dff[dff.Year > year_value].index)
     fig = px.bar(dff,
-                    x="Year",
-                    y="Count",
-                    title=f"Anzahl Medaillen der {'Männer' if gender == 'Men' else 'Frauen'}", )
+                 x="Year",
+                 y="Count",
+                 title=f"Anzahl Medaillen der {'Männer' if gender == 'Men' else 'Frauen'}", )
     fig.update_xaxes(type='category')
     return fig,
+
 
 @app.callback(
     Output("page-content", "children"),
@@ -242,7 +264,6 @@ def render_page_content(pathname):
                 ''')
         ]
     elif pathname == "/a-38":
-        from aufgabenblatt_8 import exercise38
         tmpApp = exercise38(False)
         layout = tmpApp[0].layout
         return [
@@ -265,8 +286,6 @@ def render_page_content(pathname):
             layout
         ]
     elif pathname == "/a-39":
-        print("39")
-        from aufgabenblatt_8 import exercise39
         tmpApp = exercise39()
         layout = tmpApp[0].layout
         return [
@@ -293,7 +312,6 @@ def render_page_content(pathname):
             layout
         ]
     elif pathname == "/a-40":
-        from aufgabenblatt_8 import exercise40
         layout = exercise40().layout
         prepareLayout = [
             html.H1('Aufgabe 40', style={'textAlign': 'center'}),
@@ -311,7 +329,6 @@ def render_page_content(pathname):
 
         return prepareLayout
     elif pathname == "/a-41":
-        from aufgabenblatt_9 import aufgabe41, getSortedListByColumnName
         df = load_data()
         laender = getSortedListByColumnName(df, "Country")
         gewinner = getSortedListByColumnName(df, "Athlete")
@@ -351,7 +368,6 @@ def render_page_content(pathname):
         ]
         return prepareLayout
     elif pathname == "/a-43":
-        from aufgabenblatt_9 import aufgabe43, getCountriesByDiscipline
         df = load_data()
         matrix = aufgabe43(getCountriesByDiscipline(df))
         prepareLayout = [
@@ -367,7 +383,6 @@ def render_page_content(pathname):
         ]
         return prepareLayout
     elif pathname == "/a-44":
-        from aufgabenblatt_9 import aufgabe44
         df = load_data()
         tmpApp = aufgabe44(df)
         prepareLayout = [
@@ -384,7 +399,6 @@ def render_page_content(pathname):
         ]
         return prepareLayout
     elif pathname == "/a-45":
-        from aufgabenblatt_9 import aufgabe45, aufgabe44
         df = load_data()
         app2, fig, matrix = aufgabe44(df)
         tmpApp = aufgabe45(df, fig)
@@ -404,7 +418,6 @@ def render_page_content(pathname):
 
         return prepareLayout
     elif pathname == "/a-46":
-        from aufgabenblatt_10 import filter_data
         country_options = [{"label": i, "value": i} for i in df["Country"].dropna().unique()]
         year_options = [{"label": i, "value": i} for i in df["Year"].dropna().unique()]
         sport_options = [{"label": i, "value": i} for i in df["Sport"].dropna().unique()]
@@ -422,9 +435,9 @@ def render_page_content(pathname):
             html.Hr(),
             html.Div(children=[
                 dcc.Dropdown(
-                id='country-dropdown',
-                options=country_options,
-                value="Switzerland"
+                    id='country-dropdown',
+                    options=country_options,
+                    value="Switzerland"
                 ),
                 dcc.Dropdown(
                     id='year-dropdown',
@@ -445,8 +458,6 @@ def render_page_content(pathname):
         ]
         return prepareLayout
     elif pathname == "/a-47":
-        # TODO --> Make input of filterdata2 with inputfield
-        from aufgabenblatt_10 import filter_data2
         prepareLayout = [
             html.H1('Aufgabe 47 - Filtern 2', style={'textAlign': 'center'}),
             html.P("""
@@ -470,9 +481,7 @@ def render_page_content(pathname):
         ]
         return prepareLayout
     if pathname == "/a-48":
-        # TODO --> make responsive with dropdown selected value
         # TODO --> adjust colors of bar chart
-        from aufgabenblatt_10 import group_medals_by_country
         country_options = [{"label": i, "value": i} for i in df["Country"].dropna().unique()]
         medalCount = group_medals_by_country(df.dropna(), "Switzerland")
         print(medalCount)
@@ -491,6 +500,7 @@ def render_page_content(pathname):
                 options=country_options,
                 value=country_options[0]["value"]
             ),
+            html.Br(),
             dt.DataTable(
                 id="48tbl",
                 data=medalCount.to_dict("records"),
@@ -502,20 +512,12 @@ def render_page_content(pathname):
                 children=[
                     dcc.Graph(
                         id="medals_per_country",
-                        figure=go.Figure(data=[go.Bar(
-                                x=medalCount.columns,
-                                y=medalCount.iloc[0].to_numpy(),
-                                text=medalCount.iloc[0].to_numpy(),
-                                textposition='auto',
-                                marker={"color": "#CD7F32"}
-                        )]),
                     )
                 ]
             ),
         ]
         return prepareLayout
     if pathname == "/a-49":
-        from aufgabenblatt_10 import aufgabe49
         app, _ = aufgabe49(df.dropna())
         layout = app.layout
         prepareLayout = [
@@ -531,7 +533,6 @@ def render_page_content(pathname):
         ]
         return prepareLayout
     if pathname == "/a-50":
-        from aufgabenblatt_10 import aufgabe50
         app, _ = aufgabe50(df.dropna())
         layout = app.layout
         prepareLayout = [
