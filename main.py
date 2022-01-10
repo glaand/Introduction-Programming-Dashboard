@@ -8,6 +8,7 @@ from aufgabenblatt_8 import load_data, get_axis
 import plotly.graph_objects as go
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
+app.title = "Olympics Dashboard - FHGR CDS-201 (Alex & André)"
 
 # styling the sidebar
 SIDEBAR_STYLE = {
