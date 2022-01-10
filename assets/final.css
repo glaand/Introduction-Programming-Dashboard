@@ -1,0 +1,46 @@
+.responsive-dropdowns {
+    display: flex;
+}
+
+.responsive-dropdowns .dash-dropdown {
+    width: calc(33.3% - 1rem);
+    margin-left: 1rem;
+}
+
+.dash-table-container {
+    overflow-x: auto;
+}
+
+.flex {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 100%;
+}
+
+.flex .graph {
+    width: calc(50% - 1rem);
+    margin-left: 1rem;
+}
+
+@media screen and (max-width: 800px) {
+    .responsive-dropdowns {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .responsive-dropdowns .dash-dropdown {
+        width: 100%;
+        margin-bottom: 1rem;
+        margin-left: unset;
+    }
+    .flex {
+        flex-direction: column;
+    }
+    
+    .flex .graph {
+        width: 100%;
+        margin-left: unset;
+        margin-bottom: 1rem;
+    }
+}

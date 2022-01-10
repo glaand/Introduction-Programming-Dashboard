@@ -302,18 +302,6 @@ a {
   }
 }
 
-.flex {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    max-width: 100%;
-    flex-wrap: wrap;
-}
-
-.flex .graph {
-    flex: 1;
-}
-
 #_dash-app-content {
     padding: 2rem;
 }

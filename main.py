@@ -386,21 +386,23 @@ def render_page_content(pathname):
                     gefiltert. (4 P.)
                 """),
             html.Hr(),
-            dcc.Dropdown(
+            html.Div(children=[
+                dcc.Dropdown(
                 id='country-dropdown',
                 options=country_options,
                 value=country_options[0]["value"]
-            ),
-            dcc.Dropdown(
-                id='year-dropdown',
-                options=year_options,
-                value=year_options[0]["value"]
-            ),
-            dcc.Dropdown(
-                id='athlete-dropdown',
-                options=athlete_options,
-                value=athlete_options[0]["value"]
-            ),
+                ),
+                dcc.Dropdown(
+                    id='year-dropdown',
+                    options=year_options,
+                    value=year_options[0]["value"]
+                ),
+                dcc.Dropdown(
+                    id='athlete-dropdown',
+                    options=athlete_options,
+                    value=athlete_options[0]["value"]
+                ),
+            ], className="responsive-dropdowns"),
             html.Br(),
             dt.DataTable(
                 id='46tbl', data=filter_data(df, "Switzerland", 2008, "Cycling").to_dict('records'),
