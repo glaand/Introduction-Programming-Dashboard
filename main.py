@@ -10,7 +10,7 @@ from aufgabenblatt_8 import exercise38
 from aufgabenblatt_9 import aufgabe45, aufgabe44, getSortedListByColumnName, aufgabe43, getCountriesByDiscipline
 from aufgabenblatt_10 import filter_data, filter_data2, group_medals_by_country, aufgabe50, aufgabe49
 
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
 app.title = "Olympics Dashboard - FHGR CDS-201 (Alex & André)"
 
 # styling the sidebar
@@ -207,7 +207,15 @@ def render_page_content(pathname):
     df = pd.read_csv('./datasets/data.csv', encoding="utf-8")
     if pathname == "/":
         return [
-            html.H1('Startseite', style={'textAlign': 'center'})
+            html.H1('Startseite', style={'textAlign': 'center'}),
+            html.Br(),
+            html.H2("Willkommen zum Dashboard von Alex und André!"),
+            html.H3("Dieses Dashboard wurde im Jahr 2021/2022 im Modul Einführung in die Programmierung."),
+            html.H4("Wir befinden uns im Herbstsemester des Bachelor Studiengang Computational und Data Science."),
+            html.P("Der Datensatz wurde uns von den Dozenten vorgegeben. Es werden die Olympiadaten vom Jahr 1976 bis 2008 dargestellt."),
+            html.P("Copyrights gibt keine ^^"),
+            html.P("Hier ein Meme, welches mich zum lachen gebracht hat während dem Programmieren: "),
+            html.Img(src=app.get_asset_url('meme.jpg'))
         ]
     elif pathname == "/datensatz":
         return [
