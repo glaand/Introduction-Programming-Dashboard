@@ -213,7 +213,6 @@ def render_page_content(pathname):
             html.H3("Dieses Dashboard wurde im Jahr 2021/2022 im Modul Einführung in die Programmierung."),
             html.H4("Wir befinden uns im Herbstsemester des Bachelor Studiengang Computational und Data Science."),
             html.P("Der Datensatz wurde uns von den Dozenten vorgegeben. Es werden die Olympiadaten vom Jahr 1976 bis 2008 dargestellt."),
-            html.P("Copyrights gibt keine ^^"),
             html.P("Hier ein Meme, welches mich zum lachen gebracht hat während dem Programmieren: "),
             html.Img(src=app.get_asset_url('meme.jpg'))
         ]
